@@ -8,8 +8,20 @@ export async function getHotels(req: AuthenticatedRequest, res: Response) {
   try {
     const result = await hotelsService.getHotels(userId);
 
-    res.status(httpStatus.OK).send(result);
-  } catch {
+    if (!result) {
+      return res.sendStatus(httpStatus.NOT_FOUND);
+    }
+
+    return res.status(httpStatus.OK).send(result);
+  } catch (err) {
+    if (err.name === "UnauthorizedError") {
+      return res.sendStatus(httpStatus.UNAUTHORIZED);
+    }
+
+    if (err.name === "PaymentRequiredError") {
+      return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
+    }
+
     return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
   }
 }
