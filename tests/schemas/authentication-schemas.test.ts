@@ -1,5 +1,5 @@
 import { signInSchema } from "@/schemas";
-import faker from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 
 describe("signInSchema", () => {
   const generateValidInput = () => ({

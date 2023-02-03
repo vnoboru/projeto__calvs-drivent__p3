@@ -4,13 +4,13 @@ import { faker } from "@faker-js/faker";
 
 describe("createEnrollmentSchema", () => {
   const generateValidInput = () => ({
-    name: faker.name.findName(),
+    name: faker.name.fullName(),
     cpf: generateCPF(),
     birthday: faker.date.past().toISOString(),
     phone: "(21) 98999-9999",
     address: {
       cep: "90830-563",
-      street: faker.address.streetName(),
+      street: faker.address.street(),
       city: faker.address.city(),
       number: faker.datatype.number().toString(),
       state: faker.helpers.arrayElement(getStates()).code,
