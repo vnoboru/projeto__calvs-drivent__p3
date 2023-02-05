@@ -22,10 +22,39 @@ export async function getHotels(req: AuthenticatedRequest, res: Response) {
       return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
     }
 
+    if (err.name === "NotFoundError") {
+      return res.sendStatus(httpStatus.NOT_FOUND);
+    }
+
     return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
   }
 }
 
 export async function getHotelsById(req: AuthenticatedRequest, res: Response) {
-  return "hotelsId";
+  const { userId } = req;
+  const hotelId = Number(req.params.hotelId);
+
+  if (!hotelId) {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
+
+  try {
+    const result = await hotelsService.getHotelsById(userId, hotelId);
+
+    return res.status(httpStatus.OK).send(result);
+  } catch (err) {
+    if (err.name === "UnauthorizedError") {
+      return res.sendStatus(httpStatus.UNAUTHORIZED);
+    }
+
+    if (err.name === "paymentRequiredError") {
+      return res.sendStatus(httpStatus.PAYMENT_REQUIRED);
+    }
+
+    if (err.name === "NotFoundError") {
+      return res.sendStatus(httpStatus.NOT_FOUND);
+    }
+
+    return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
+  }
 }

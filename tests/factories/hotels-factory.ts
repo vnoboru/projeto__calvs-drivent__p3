@@ -11,3 +11,13 @@ export function createHotel() {
     },
   });
 }
+
+export async function createRoomHotel(hotelId: number) {
+  return prisma.room.create({
+    data: {
+      name: faker.name.fullName(),
+      capacity: faker.datatype.number(),
+      hotelId: hotelId,
+    },
+  });
+}
